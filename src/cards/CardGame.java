@@ -63,5 +63,9 @@ public class CardGame {
         }
         players.get(n-1).setPickupDeck(decks.get(n-1));
         players.get(n-1).setDiscardDeck(decks.get(0));
+
+        for (Player player : players) {
+            player.start();
+        }
     }
 }

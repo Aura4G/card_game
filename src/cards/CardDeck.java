@@ -2,22 +2,26 @@ package cards;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Collections;
 
-public class CardDeck extends Thread{
+public class CardDeck{
     
     //attributes
     private int deckIndex;
-    private List<Card> cards = new ArrayList<Card>();
-
+    private List<Card> cards = Collections.synchronizedList(new ArrayList<Card>());
     private static int i = 0;
 
     //methods
     public int getDeckIndex(){return deckIndex;}
-    public List<Card> getCards(){return cards;}
-    public void addCard(Card newCard) {cards.add(newCard);}
+    public synchronized List<Card> getCards(){return cards;}
+    public synchronized void addCard(Card newCard) {
+        cards.add(newCard);
+        notifyAll();
+    }
 
-    public void loseCard(Card cardToBeDrawn) {
+    public synchronized void loseCard(Card cardToBeDrawn) {
         cards.remove(cardToBeDrawn);
+        notifyAll();
     }
 
     public CardDeck() {
