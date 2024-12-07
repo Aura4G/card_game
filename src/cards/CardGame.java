@@ -10,6 +10,8 @@ public class CardGame {
     private int totalPlayers;
     private List<Player> players = new ArrayList<Player>();
     private List<CardDeck> decks = new ArrayList<CardDeck>();
+    private boolean isFinished = false;
+    private int rounds = 1;
 
     public Player getPlayerFromIndex(int index) {
         for (Player player : players) {
@@ -65,7 +67,57 @@ public class CardGame {
         players.get(n-1).setDiscardDeck(decks.get(0));
 
         for (Player player : players) {
+            player.initialContents();
             player.start();
+        }
+
+        try {
+            gameLoop();
+        } catch (InterruptedException e) {}
+    }
+
+    public void gameLoop() throws InterruptedException {
+        while (!isFinished) {
+            System.out.println("Round: " + rounds);
+
+            // Wait for all players to finish the current round
+            for (Player player : players) {
+                while (!player.isReadyForNextRound() || !player.isReadyToDiscard()) {
+                    Thread.sleep(10); // Polling until the player finishes
+                }
+            }
+
+            // Reset players for the next round
+            for (Player player : players) {
+                player.resetForNextRound();
+                if (player.cardsMatch()) {
+                    isFinished = true;
+                    System.out.println("Game over! Player " + player.getPlayerIndex() + " wins!!");
+                }
+            }
+
+            rounds++;
+
+            if (rounds > 255) {
+                System.out.println("Time Out!!");
+                for (Player player : players) {
+                    player.stopRunning(); // Stop all threads
+                }
+                isFinished = true;
+            }
+        }
+
+
+        for (Player player : players) {
+            player.stopRunning(); // Stop all threads
+        }
+
+        for (Player player : players) {
+            player.join();
+        }
+
+        for (CardDeck deck : decks) {
+            deck.lastDeckContents();
         }
     }
 }
