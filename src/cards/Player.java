@@ -1,6 +1,10 @@
 package cards;
 
 import java.util.List;
+import java.util.Objects;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Player extends Thread{
@@ -10,7 +14,10 @@ public class Player extends Thread{
     private List<Card> cards = new ArrayList<Card>();
     private CardDeck discardDeck;
     private CardDeck pickupDeck;
-
+    private volatile boolean isRunning = true;
+    private volatile boolean readyForNextRound = false;
+    private volatile boolean readyToDiscard = false;
+    private int x = 1;
     private static int i = 0;
 
     //methods
@@ -49,21 +56,96 @@ public class Player extends Thread{
         pickupDeck.loseCard(transferredCard);
     }
 
+    public void ready() {
+        isRunning = true;
+    }
+
+    public void stopRunning() {
+        isRunning = false;
+    }
+
+    public boolean isReadyForNextRound() {
+        return readyForNextRound;
+    }
+
+    public boolean isReadyToDiscard() {
+        return readyToDiscard;
+    }
+
+    public void resetForNextRound() {
+        readyForNextRound = false;
+        readyToDiscard = false;
+    }
+
     public Player() {
         playerIndex = ++i;
+    }
+
+    public boolean cardsMatch() {
+        int[] array = getCardValues();
+
+        for (int i = 1; i < array.length; i++) {
+            if (!Objects.equals(array[0], array[i])) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public int[] getCardValues() {
+        int[] cardArray = new int[4];
+
+        for (int a = 0; a < 4; a++) {
+            cardArray[a] = cards.get(a).getCardValue();
+        }
+
+        return cardArray;
+    }
+
+    public synchronized void initialContents() {
+
+        String output = "player" + playerIndex + " initial hand : ";
+        for (Card card : cards) {
+            output = output + card.getCardValue() + " ";
+        }
+
+        try {
+            File myObj = new File("player" + playerIndex + "_output.txt");
+            myObj.createNewFile();
+            FileWriter writer = new FileWriter(myObj);
+            writer.write(output);
+            writer.close();
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+    }
+
+    public synchronized void updateContents() {
+        String output = "player" + playerIndex + " current hand : ";
+        for (Card card : cards) {
+            output = output + card.getCardValue() + " ";
+        }
+
+        try (FileWriter writer = new FileWriter("player" + playerIndex + "_output.txt", true)) {
+            writer.write("\nRound " + x + ": Player " + playerIndex + " takes " + cards.get(cards.size() - 1).getCardValue() + " from deck " + pickupDeck.getDeckIndex());
+            writer.write("\nRound " + x + ": Player " + playerIndex + " discards " + discardDeck.getCards().get(discardDeck.getCards().size() - 1).getCardValue() + " to deck " + discardDeck.getDeckIndex());
+            writer.write("\n" + output);
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     //run
     public void run(){
         System.out.println("Player " + playerIndex + " present! starting with " + cards.size() + " cards");
-        int x = 1;
 
-        try {
-            while (true) {
-
+        while (isRunning) {
+            try {
                 synchronized (pickupDeck) {
                     // Check if `pickupDeck` has 4 elements and take one
-                    while (pickupDeck.getCards().size() < 4) {
+                    while (pickupDeck.getCards().size() != 4) {
                         pickupDeck.wait(); // Wait until `pickupDeck` has 4 elements
                     }
                     
@@ -72,9 +154,12 @@ public class Player extends Thread{
                     pickupDeck.notifyAll();
                 }
 
+                readyToDiscard = true;
+                sleep(25);
+
                 synchronized (this) {
                     // Check if `cards` has 5 elements and remove one
-                    while (cards.size() < 5) {
+                    while (cards.size() < 5 && discardDeck.getCards().size() != 3) {
                         this.wait(); // Wait until `cards` has 5 elements
                     }
                     discard(cards.get(0).getCardValue());
@@ -82,17 +167,15 @@ public class Player extends Thread{
                     this.notifyAll(); // Notify other threads
                 }
 
-                x++;
-                sleep(200);
-                
+                readyForNextRound = true;
+                updateContents();
+                sleep(25);
+            } catch (InterruptedException e) {
+                System.out.println(Thread.currentThread().getName() + " was interrupted.");
             }
-        } catch (InterruptedException e) {
-            System.out.println(Thread.currentThread().getName() + " was interrupted.");
-        }
 
-        System.out.println("Player " + playerIndex);
-        for (Card card : cards) {
-            System.out.println(card.getCardValue());
+            x++;
+            
         }
     }
 }
