@@ -1,0 +1,117 @@
+player3 initial hand : 11 1 10 14 
+
+player 3 draws a 2 from deck 3
+player 3 discards a 14 to deck 4
+player3 current hand : 11 1 10 2 
+
+player 3 draws a 15 from deck 3
+player 3 discards a 15 to deck 4
+player3 current hand : 11 1 10 2 
+
+player 3 draws a 9 from deck 3
+player 3 discards a 2 to deck 4
+player3 current hand : 11 1 10 9 
+
+player 3 draws a 2 from deck 3
+player 3 discards a 1 to deck 4
+player3 current hand : 11 10 9 2 
+
+player 3 draws a 15 from deck 3
+player 3 discards a 15 to deck 4
+player3 current hand : 11 10 9 2 
+
+player 3 draws a 5 from deck 3
+player 3 discards a 11 to deck 4
+player3 current hand : 10 9 2 5 
+
+player 3 draws a 6 from deck 3
+player 3 discards a 2 to deck 4
+player3 current hand : 10 9 5 6 
+
+player 3 draws a 4 from deck 3
+player 3 discards a 10 to deck 4
+player3 current hand : 9 5 6 4 
+
+player 3 draws a 15 from deck 3
+player 3 discards a 6 to deck 4
+player3 current hand : 9 5 4 15 
+
+player 3 draws a 3 from deck 3
+player 3 discards a 15 to deck 4
+player3 current hand : 9 5 4 3 
+
+player 3 draws a 11 from deck 3
+player 3 discards a 4 to deck 4
+player3 current hand : 9 5 3 11 
+
+player 3 draws a 6 from deck 3
+player 3 discards a 6 to deck 4
+player3 current hand : 9 5 3 11 
+
+player 3 draws a 12 from deck 3
+player 3 discards a 5 to deck 4
+player3 current hand : 9 3 11 12 
+
+player 3 draws a 14 from deck 3
+player 3 discards a 12 to deck 4
+player3 current hand : 9 3 11 14 
+
+player 3 draws a 7 from deck 3
+player 3 discards a 7 to deck 4
+player3 current hand : 9 3 11 14 
+
+player 3 draws a 11 from deck 3
+player 3 discards a 14 to deck 4
+player3 current hand : 9 3 11 11 
+
+player 3 draws a 9 from deck 3
+player 3 discards a 9 to deck 4
+player3 current hand : 3 11 11 9 
+
+player 3 draws a 3 from deck 3
+player 3 discards a 11 to deck 4
+player3 current hand : 3 11 9 3 
+
+player 3 draws a 10 from deck 3
+player 3 discards a 11 to deck 4
+player3 current hand : 3 9 3 10 
+
+player 3 draws a 14 from deck 3
+player 3 discards a 14 to deck 4
+player3 current hand : 3 9 3 10 
+
+player 3 draws a 12 from deck 3
+player 3 discards a 9 to deck 4
+player3 current hand : 3 3 10 12 
+
+player 3 draws a 14 from deck 3
+player 3 discards a 14 to deck 4
+player3 current hand : 3 3 10 12 
+
+player 3 draws a 15 from deck 3
+player 3 discards a 15 to deck 4
+player3 current hand : 3 3 10 12 
+
+player 3 draws a 15 from deck 3
+player 3 discards a 15 to deck 4
+player3 current hand : 3 3 10 12 
+
+player 3 draws a 10 from deck 3
+player 3 discards a 12 to deck 4
+player3 current hand : 3 3 10 10 
+
+player 3 draws a 11 from deck 3
+player 3 discards a 10 to deck 4
+player3 current hand : 3 3 10 11 
+
+player 3 draws a 6 from deck 3
+player 3 discards a 10 to deck 4
+player3 current hand : 3 3 11 6 
+
+player 3 draws a 15 from deck 3
+player 3 discards a 6 to deck 4
+player3 current hand : 3 3 11 15 
+
+player 2 has informed player 3 that player 2 has won
+player 3 exits
+player 3 final hand: 3 3 11 15 
